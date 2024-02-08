@@ -2,7 +2,19 @@
 
 include('../Database_connect/connect.php');
 
+$id = $_GET['updatedid'];
+
+$sql = "SELECT * from `products` where id=$id";
+$result = mysqli_query($con, $sql);
+$row = mysqli_fetch_assoc($result);
+$product_title = $row['product_name'];
+$product_description = $row['product_description'];
+$product_image = $row['product_image'];
+$product_price = $row['product_price'];
+$product_category = $row['product_category'];
+
 if (isset($_POST['submit'])) {
+    $product_id = $row['id'];
     $product_title = $_POST['product_title'];
     $product_description = $_POST['product_description'];
     $product_category = $_POST['product_category'];
@@ -20,7 +32,8 @@ if (isset($_POST['submit'])) {
         move_uploaded_file($temp_image, "./Product Images/$product_image");
 
         // Insert the product data into the 'products' table
-        $insert_products = "INSERT INTO `products` (product_name, product_description, product_category, product_image, product_price) VALUES ('$product_title', '$product_description', '$product_category', '$product_image', '$product_price')";
+        $insert_products = "UPDATE `products` set id=$id,product_name='$product_title',product_description='$product_description',product_category='$product_category',product_price='$product_price',product_image='$product_image' where id=$id";
+
 
         // Execute the insert query
         $result_query = mysqli_query($con, $insert_products);
@@ -28,6 +41,7 @@ if (isset($_POST['submit'])) {
         // Check if the insertion was successful and display a success message
         if ($result_query) {
             echo "<script>alert('Successfully inserted the products')</script>";
+            header('location:admin-products.php');
         }
     }
 }
@@ -173,7 +187,7 @@ if (isset($_POST['submit'])) {
                                 <div class="w-full relative p-4">
                                     <label for="" class="font-medium text-sm text-slate-600 dark:text-slate-400">Upload Image</label>
                                     <div class="w-full mx-auto  mb-4">
-                                        <input type="file" class="filepond" name="product_image" id="product_image" accept="image/png, image/jpeg, image/gif" />
+                                        <input type="file" class="filepond" name="product_image" id="product_image" accept="image/png, image/jpeg, image/gif" value="<?php  $product_image ?>"/>
                                     </div>
                                 </div>
                                 <!--end card-->
@@ -183,18 +197,18 @@ if (isset($_POST['submit'])) {
                                     <div class="flex-auto p-0 md:p-4">
                                         <div class="mb-2">
                                             <label for="title" class="font-medium text-sm text-slate-600 dark:text-slate-400">Title</label>
-                                            <input type="title" id="product_title" name="product_title" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-brand-500 dark:focus:border-brand-500  dark:hover:border-slate-700" placeholder="Title" required>
+                                            <input type="title" id="product_title" name="product_title" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-brand-500 dark:focus:border-brand-500  dark:hover:border-slate-700" placeholder="Title" required value="<?php echo $product_title; ?>">
                                         </div>
                                         <div class="mb-2">
                                             <label for="description" class="font-medium text-sm text-slate-600 dark:text-slate-400">Description</label>
-                                            <textarea id="product_description" name="product_description" rows="3" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-1 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-primary-500 dark:focus:border-primary-500  dark:hover:border-slate-700" placeholder="Description ..."></textarea>
+                                            <textarea id="product_description" name="product_description" rows="3" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-1 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-primary-500 dark:focus:border-primary-500  dark:hover:border-slate-700" placeholder="Description ..." "><?php echo $product_description ?></textarea>
                                         </div>
                                         <div class="mb-2 col-span-1">
                                             <div class="grid grid-cols-2 gap-3">
                                                 <div class="mb-2">
                                                     <label for="category" class="font-medium text-sm text-slate-600 dark:text-slate-400">Category</label>
                                                     <select id="product_category" name="product_category" class="w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-primary-500 dark:focus:border-primary-500  dark:hover:border-slate-700">
-                                                        <option class="dark:text-slate-700">All Category</option>
+                                                        <option class="dark:text-slate-700"><?php echo $product_category ?></option>
                                                         <option class="dark:text-slate-700">Wooden</option>
                                                         <option class="dark:text-slate-700">Steel</option>
                                                     </select>
@@ -202,13 +216,13 @@ if (isset($_POST['submit'])) {
 
                                                 <div class="col-span-1">
                                                     <label for="price" class="font-medium text-sm text-slate-600 dark:text-slate-400">Price</label>
-                                                    <input type="text" id="product_price" name="product_price" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-brand-500 dark:focus:border-brand-500  dark:hover:border-slate-700" placeholder="Price" required>
+                                                    <input type="text" id="product_price" name="product_price" class="form-input w-full rounded-md mt-1 border border-slate-300/60 dark:border-slate-700 dark:text-slate-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 placeholder:text-slate-400/70 placeholder:font-normal placeholder:text-sm hover:border-slate-400 focus:border-brand-500 dark:focus:border-brand-500  dark:hover:border-slate-700" placeholder="Price" required value="<?php echo $product_price; ?>">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="">
-                                            <input type="submit" name="submit" id="" class="px-2 py-2 lg:px-4 bg-brand  text-white text-sm  rounded hover:bg-brand-600 border border-brand-500" value="Add Product">
+                                            <input type="submit" name="submit" id="" class="px-2 py-2 lg:px-4 bg-brand  text-white text-sm  rounded hover:bg-brand-600 border border-brand-500" value="Update Product">
 
                                             <!-- <button class="px-2 py-2 lg:px-4 bg-transparent  text-brand text-sm  rounded transition hover:bg-brand-500 hover:text-white border border-brand font-medium">Save Product</button> -->
                                         </div>
@@ -222,50 +236,8 @@ if (isset($_POST['submit'])) {
                     <!--end col-->
 
 
-                    <div class="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-3 xl:col-span-3">
-                        <div class="w-full relative">
-                            <h4 class="text-lg font-bold">Showing Previous Product Created</h4>
-                            <?php
-                            $select_query = "SELECT * FROM `products` ORDER BY id DESC LIMIT 1";
 
-                            $result_query = mysqli_query($con, $select_query);
-                            while ($row = mysqli_fetch_assoc($result_query)) {
-                                $product_title = $row['product_name'];
-                                $product_description = $row['product_description'];
-                                $product_image = $row['product_image'];
-                                $product_price = $row['product_price'];
-                                $product_create = $row['created_at'];
-                                $product_update = $row['updated_at'];
 
-                                echo "<div class='flex-auto p-0 md:p-4'>
-                                <div>
-                                    <img src='./Product Images/$product_image' alt='' class='w-full h-auto'>
-                                </div>
-                                <div class='mb-5'>
-                                    <p class='text-slate-700 text-base dark:text-slate-400'>Product Title</p>
-                                    <h4 class='text-xl font-semibold text-slate-700 dark:text-slate-300'>$product_title</h4>
-                                </div>
-                                <div class='mb-5'>
-                                    <p class='text-slate-600 text-base dark:text-slate-400'>Description</p>
-                                    <h4 class='text-base font-medium text-slate-900 dark:text-slate-300'>$product_description</h4>
-                                </div>
-                                <div class='mb-5'>
-                                    <p class='text-slate-600 text-base dark:text-slate-400'>Product Date</p>
-                                    <h4 class='text-base font-semibold text-slate-900 dark:text-slate-300'>$product_create</h4>
-                                </div>
-                                <div class='mb-5'>
-                                    <p class='text-slate-600 text-base dark:text-slate-400'>Update Date</p>
-                                    <h4 class='text-base font-semibold text-slate-900 dark:text-slate-300'>$product_update</h4>
-                                </div>
-                            </div>";
-                            }
-                            ?>
-                            
-                            <!--end card-body-->
-                        </div>
-                        <!--end card-->
-                    </div>
-                    <!--end col-->
                 </div>
                 <!--end grid-->
                 <!-- footer -->
