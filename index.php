@@ -118,11 +118,6 @@ include('./Database_connect/connect.php');
 				</div>";
 				}
 				?>
-				
-				<!-- End Column 2 -->
-
-				
-				<!-- End Column 4 -->
 
 			</div>
 		</div>
