@@ -267,8 +267,6 @@ if (isset($_POST['submit'])) {
                     </div>
                     <!--end col-->
                 </div>
-                <!--end grid-->
-                <!-- footer -->
                 <div class="absolute bottom-0 -left-4 -right-4 block print:hidden border-t p-4  dark:border-slate-700/40">
                     <div class="container">
                         <!-- Footer Start -->
