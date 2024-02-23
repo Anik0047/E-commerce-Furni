@@ -27,7 +27,9 @@ body {
 #pass_error,
 #email_error {
   color: red;
-  /* margin-top: -15px; */
+  margin-top: -20px;
+  margin-bottom: 10px;
+  font-size: 12px;
   display: none;
 }
 
@@ -41,6 +43,7 @@ h5 {
 
 .login-box .user-box {
   position: relative;
+  color: #03e9f4;
 }
 
 .login-box .user-box input {
@@ -55,7 +58,7 @@ h5 {
   background: transparent;
 }
 
-.login-box .user-box label {
+/* .login-box .user-box label {
   position: absolute;
   top: 0;
   left: 0;
@@ -64,7 +67,7 @@ h5 {
   color: #fff;
   pointer-events: none;
   transition: .5s;
-}
+} */
 
 .login-box .user-box input:focus~label,
 .login-box .user-box input:valid~label {

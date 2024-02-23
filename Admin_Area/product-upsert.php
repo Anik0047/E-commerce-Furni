@@ -1,6 +1,7 @@
 <?php
 include('../Database_connect/connect.php');
-// die();
+
+// Insert product 
 
 if (isset($_POST)) {
     $operation = $_POST['operation'];
@@ -49,25 +50,25 @@ if (isset($_POST)) {
         }
     }
 
-    if($operation == 'DELETE'){
-    $id=$_POST['deleteId'];
 
-    $sql="delete from `products` where id=$id";
-    $result=mysqli_query($con,$sql);
-    if($result){
-        echo json_encode([
-            'status' => true,
-            'message' => 'Successfull'
-        ]);
-        // header('location:admin-products.php');
-    }else{
-        echo json_encode([
-            'status' => false,
-            'message' => mysqli_error($con)
-        ]);
+    // Delete product
+
+    if ($operation == 'DELETE') {
+        $id = $_POST['deleteId'];
+
+        $sql = "delete from `products` where id=$id";
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+            echo json_encode([
+                'status' => true,
+                'message' => 'Successfull'
+            ]);
+            // header('location:admin-products.php');
+        } else {
+            echo json_encode([
+                'status' => false,
+                'message' => mysqli_error($con)
+            ]);
+        }
     }
 }
-
-}
-
-
