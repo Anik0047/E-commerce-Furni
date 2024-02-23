@@ -16,12 +16,12 @@ include('../Database_connect/connect.php');
     <meta content="" name="Mannatthemes" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico" />
+    <!-- <link rel="shortcut icon" href="assets/images/favicon.ico" /> -->
 
     <!-- Css -->
     <!-- Main Css -->
-    <link rel="stylesheet" href="assets/libs/icofont/icofont.min.css">
-    <link href="assets/libs/flatpickr/flatpickr.min.css" type="text/css" rel="stylesheet">
+   <!--  <link rel="stylesheet" href="assets/libs/icofont/icofont.min.css">
+    <link href="assets/libs/flatpickr/flatpickr.min.css" type="text/css" rel="stylesheet"> -->
     <link rel="stylesheet" href="assets/css/tailwind.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -308,7 +308,7 @@ include('../Database_connect/connect.php');
                                                             </td>
                                                             <td class='p-3 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400'>
                                                                 <a href='admin-update-product.php?updatedid=$product_id'><i class='fa-solid fa-pencil pe-2'></i></a>
-                                                                <a href='admin-delete-product.php?deletedid=$product_id'><i class='fa-solid fa-trash-can'></i></a>
+                                                                <p onclick='deleteProduct($product_id)'>delete</p>
                                                             </td>
                                                         </tr>
                                                     </tbody>";
@@ -354,13 +354,44 @@ include('../Database_connect/connect.php');
 
     <!-- JAVASCRIPTS -->
     <!-- <div class="menu-overlay"></div> -->
-    <script src="assets/libs/lucide/umd/lucide.min.js"></script>
+  <!--   <script src="assets/libs/lucide/umd/lucide.min.js"></script>
     <script src="assets/libs/simplebar/simplebar.min.js"></script>
     <script src="assets/libs/flatpickr/flatpickr.min.js"></script>
     <script src="assets/libs/@frostui/tailwindcss/frostui.js"></script>
 
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.js"></script> -->
     <!-- JAVASCRIPTS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        let operation = '';
+        // $(document).ready(function(){
+            function deleteProduct(deleteId){
+                const Id = deleteId;
+
+                operation = 'DELETE';
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'product-upsert.php',
+                    data: 'deleteId=' + Id + '&operation=' + operation,
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.status){
+                            alert(response.message);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        }else{
+                             alert(response.message);
+                        }
+                    }
+
+
+                })
+            }
+        // })
+    </script>
 </body>
 
 </html>
